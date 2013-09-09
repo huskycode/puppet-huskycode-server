@@ -1,0 +1,19 @@
+FORGE
+  remote: http://forge.puppetlabs.com
+  specs:
+    huskycode/vim (0.0.2)
+      maestrodev/wget (>= 1.1.0)
+      puppetlabs/vcsrepo (>= 0.1.2)
+    maestrodev/wget (1.2.1)
+    puppetlabs/apt (1.2.0)
+      puppetlabs/stdlib (>= 2.2.1)
+    puppetlabs/nodejs (0.4.0)
+      puppetlabs/apt (>= 0.0.3)
+      puppetlabs/stdlib (>= 2.0.0)
+    puppetlabs/stdlib (4.1.0)
+    puppetlabs/vcsrepo (0.1.2)
+
+DEPENDENCIES
+  huskycode/vim (>= 0)
+  puppetlabs/nodejs (>= 0)
+
