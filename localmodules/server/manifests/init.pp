@@ -8,9 +8,25 @@ class server {
   class { "server::users": } ->
   class { "server::personal":
     user => "varokas",
-  } 
+  } ->
+  class { "server::teamcity":
+    name => "TeamCity-8.0.3",
+  }
 } 
 
+
+class server::teamcity($name) { 
+  package{ "openjdk-7-jdk":
+    ensure => "present",
+  } ->
+  archive { $name: 
+    ensure => present,
+    url    => "http://download.jetbrains.com/teamcity/${name}.tar.gz",
+    target => '/var',
+    root_dir => 'TeamCity',
+    checksum => false,
+  }
+}
 class server::personal($user) { 
   $home = "/home/${user}"
   

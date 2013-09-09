@@ -12,8 +12,10 @@ FORGE
       puppetlabs/stdlib (>= 2.0.0)
     puppetlabs/stdlib (4.1.0)
     puppetlabs/vcsrepo (0.1.2)
+    smarchive/archive (0.1.1)
 
 DEPENDENCIES
   huskycode/vim (>= 0)
   puppetlabs/nodejs (>= 0)
+  smarchive/archive (>= 0)
 

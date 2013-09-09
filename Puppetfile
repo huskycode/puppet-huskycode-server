@@ -1,6 +1,7 @@
 forge "http://forge.puppetlabs.com"
 
 mod 'puppetlabs/nodejs'
+mod 'smarchive/archive'
 mod 'huskycode/vim'
 
 # mod 'ntp',
