@@ -11,9 +11,25 @@ class server {
   } ->
   class { "server::teamcity":
     name => "TeamCity-8.0.3",
-  }
+  } ->
+  class { "server::foresee":
+  } 
+
 } 
 
+class server::foresee {
+  class { "nodejs": 
+    manage_repo => true
+  } -> 
+  package { "jasmine-node":
+    provider => "npm",
+    ensure => "present",
+  } ->
+  package { "nodemon":
+    provider => "npm",
+    ensure => "present",
+  }
+}
 
 class server::teamcity($name) { 
   package{ "openjdk-7-jdk":
@@ -25,6 +41,17 @@ class server::teamcity($name) {
     target => '/var',
     root_dir => 'TeamCity',
     checksum => false,
+  } ->
+  file { "/etc/init.d/teamcity":
+    owner => "root",
+    group => "root",
+    source => "puppet:///modules/server/teamcity",
+    mode => 0755,
+    ensure => "file",
+  }
+  service { "teamcity": 
+    ensure => "running",
+    subscribe => File["/etc/init.d/teamcity"],
   }
 }
 class server::personal($user) { 
