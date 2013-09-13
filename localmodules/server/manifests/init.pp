@@ -48,7 +48,12 @@ class server::foresee {
     group => "root",
     content => template("server/haproxy.cfg.erb"),
     notify => Service["haproxy"],
-  }
+  } -> 
+  file_line { "enable haproxy": 
+    path => "/etc/default/haproxy",
+    line => "ENABLED=1",
+    match => "ENABLED=",
+  } 
   service { "haproxy":
     ensure => "running",
     subscribe => File["/etc/haproxy/haproxy.cfg"],
