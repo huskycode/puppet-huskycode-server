@@ -29,6 +29,30 @@ class server::foresee {
     provider => "npm",
     ensure => "present",
   }
+
+  package { ["firefox","xvfb"]: 
+    ensure => "present",
+  }
+  
+  $teamcity_port = 8111
+  $foresee_port = 3000
+  $foresee_qa_port = 3002
+
+  package { "haproxy": 
+    ensure => "present",
+  } -> 
+  file { "/etc/haproxy/haproxy.cfg": 
+    ensure => "file",
+    mode => "0644",
+    owner => "root",
+    group => "root",
+    content => template("server/haproxy.cfg.erb"),
+    notify => Service["haproxy"],
+  }
+  service { "haproxy":
+    ensure => "running",
+    subscribe => File["/etc/haproxy/haproxy.cfg"],
+  }
 }
 
 class server::teamcity($name) { 

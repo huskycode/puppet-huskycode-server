@@ -1,0 +1,47 @@
+global
+  log 127.0.0.1   local0
+  log 127.0.0.1   local1 notice
+  #log loghost    local0 info
+  maxconn 4096
+  #debug
+  #quiet
+  user haproxy
+  group haproxy
+
+defaults
+  log     global
+  mode    http
+  option  httplog
+  option  http-server-close
+  option  dontlognull
+  retries 3
+  option redispatch
+  timeout connect 5s
+  timeout client 50s
+  timeout server 50s
+  balance  roundrobin
+
+# Set up application listeners here.
+
+frontend http
+  maxconn 4000
+  bind 0.0.0.0:80
+  acl is_foresee hdr_dom(host) foresee2
+  acl is_foresee_qa hdr_dom(host) foresee_qa2
+  acl is_teamcity hdr_dom(host) teamcity2
+  use_backend foresee if is_foresee
+  use_backend foresee_qa if is_foresee_qa
+  use_backend teamcity if is_teamcity
+  default_backend huskycode
+
+backend huskycode
+  redirect location http://www.huskycode.com
+
+backend teamcity
+  server localhost 127.0.0.1:<%= @teamcity_port %>
+
+backend foresee
+  server localhost 127.0.0.1:<%= @foresee_port %>
+
+backend foresee_qa
+  server localhost 127.0.0.1:<%= @foresee_qa_port %>
