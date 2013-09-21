@@ -106,6 +106,9 @@ class server::users {
   $users = {
     "varokas" => {
       password => '$1$k8ggtHzJ$d6rxI.AuN9976pPoU444M/',
+    },
+    "thsea" => {
+      password => '$1$5cnmQhGe$RRHg9gL5sx3jLM9NK1x4j0',
     }
   }
 
