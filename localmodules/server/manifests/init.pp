@@ -59,6 +59,34 @@ class server::foresee {
     ensure => "running",
     subscribe => File["/etc/haproxy/haproxy.cfg"],
   }
+
+ server::foresee::upstart { "foresee": 
+    service_name => "foresee", 
+    root_path => "/opt",
+    port => "3000",
+ }   
+ server::foresee::upstart { "foresee-qa": 
+    service_name => "foresee-qa", 
+    root_path => "/opt",
+    port => "3002",
+ } 
+}
+
+define server::foresee::upstart($service_name, $root_path, $port)  {
+  $path = "${root_path}/${service_name}/foresee"
+  $logfile_name = "node-${service_name}.log"
+
+  file { "/etc/init/${service_name}.conf":
+    owner => "root",
+    group => "root",
+    content => template("server/foresee-service.conf.erb"),
+    mode => 0755,
+    ensure => "file",
+  } -> 
+  service { $service_name: 
+    ensure => 'running',
+    provider => 'upstart',
+  }
 }
 
 class server::teamcity($name) { 
