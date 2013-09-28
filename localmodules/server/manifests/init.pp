@@ -112,5 +112,27 @@ class server::users {
     }
   }
 
-  create_resources(user, $users, $users_default)
+  create_resources(user, $users, $users_default) 
+}
+
+class server::user_data {
+  $thsea = hiera("thsea")
+  $thsea_id_rsa = $thsea["id_rsa"]
+
+  file { '/home/thsea/.ssh/id_rsa':
+    ensure  => 'file',
+    content => $thsea_id_rsa,
+    owner   => 'thsea',
+    group   => 'sudo',
+    mode    => '600',
+  } 
+
+  file { '/home/thsea/.ssh/id_rsa.pub':
+    ensure  => 'file',
+    content => 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDArADXfPgs0h+phytvdxQrsvsKxxve2O+6tRQ/dFAcJy/hg5/Fi7yZDi3iNRDWj/3FyFUjcuV+joYdORiUUFXdpY2lOf/qG0LW3e0Ienoal7N3M6xZo90WFHFDiVJ4FSUmxgGBS25lFXU1Erlg6x4J8u0HlaPKNwD3JOkZ4slkghdL5kN6FmvaOX4Jts2wD9m97wQFK/BfVzkqCpzQkUHi1/xoDKkTKnKJsKs/SAYCTaMbEh2bEbJ/OPm8LHzn5sFqQq1Ly6w8UmvcBbWaWiuUeZe+9XP/nnsk70Ei2QnJ7/ugC8uNlivFHza0cM3qebhrPYgI+aFkUtO+XpnbYlp2tSfGZ/JG90rTVkAWx1DgmWKuEpZXQ74YON3k/0j0AqIBBKQt5ExLPb0hwtVksHBIiKOuBeCx4nDg0pU4Q7iniwkk5BFtaMciQFPZ9fKfH0zkeqKxriFtYiXd0XWCOjJid4KdaQCnumh/X8zgv8GkujYsxRzRgOjySbgs4SVpoIvkKjmt5s2pEyqsWCXxQq/tKf6SKMNCVXSIzwkvijuo9VqU6Qk6aswjux9DyKtnkXSOuNb2FGJiIf3F7+djt3VFC6yoYEFRoJwIJgZxGDlawELhx3JFsENvwo7Yw9MjNB27UMwlsyR2K7AbTt2jEIxZw+f4Mgspa4hybdSBtQaIMQ== thsea@li124-54',
+    owner   => 'thsea',
+    group   => 'sudo', 
+    mode    => '644',
+    type    => 'file',
+  }
 }

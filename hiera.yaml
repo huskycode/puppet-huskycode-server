@@ -1,0 +1,13 @@
+---
+:backends: - yaml
+           - gpg
+
+:logger: console
+
+:hierarchy: - common
+
+:yaml:
+   :datadir: hieradata
+
+:gpg:
+   :datadir: hieradata

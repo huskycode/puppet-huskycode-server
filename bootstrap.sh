@@ -10,3 +10,12 @@ echo "Installing librarian-puppet, this might take a while..."
 sudo apt-get -y install rubygems
 sudo gem install librarian-puppet
 librarian-puppet install --verbose
+
+echo "Install gpg"
+sudo apt-get -y install gnupg
+gem install hiera-gpg
+
+echo "*************************************"
+echo "At this point, set up pgp private key for 'Huskycode Deploy <deploy@huskycode.com>'"
+echo "*************************************"
+
