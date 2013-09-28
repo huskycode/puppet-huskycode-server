@@ -6,6 +6,7 @@ class server {
 
 
   class { "server::users": } ->
+  class { "server::user_data": } ->
   class { "server::personal":
     user => "varokas",
   } ->
@@ -133,6 +134,5 @@ class server::user_data {
     owner   => 'thsea',
     group   => 'sudo', 
     mode    => '644',
-    type    => 'file',
   }
 }
