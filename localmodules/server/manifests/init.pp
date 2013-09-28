@@ -31,7 +31,7 @@ class server::foresee {
     ensure => "present",
   }
 
-  package { ["firefox","xvfb"]: 
+  package { ["firefox","xvfb","unzip"]: 
     ensure => "present",
   }
   
