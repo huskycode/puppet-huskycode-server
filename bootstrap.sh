@@ -18,4 +18,5 @@ gem install hiera-gpg
 echo "*************************************"
 echo "At this point, set up pgp private key for 'Huskycode Deploy <deploy@huskycode.com>'"
 echo "*************************************"
-
+echo "gpg --import public.key"
+echo "gpg --allow-secret-key-import --import private.key"
