@@ -11,7 +11,7 @@ class server {
     user => "varokas",
   } ->
   class { "server::teamcity":
-    name => "TeamCity-8.0.3",
+    name => "TeamCity-8.0.5",
   } ->
   class { "server::foresee":
   } 
