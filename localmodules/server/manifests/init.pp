@@ -147,6 +147,13 @@ class server::users {
 class server::user_data {
   $thsea = hiera("thsea")
   $thsea_id_rsa = $thsea["id_rsa"]
+  
+  file { '/home/thsea/.ssh':
+    ensure  => 'directory',
+    owner   => 'thsea',
+    group   => 'sudo', 
+    mode    => '644',
+  }
 
   file { '/home/thsea/.ssh/id_rsa':
     ensure  => 'file',
