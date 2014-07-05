@@ -14,7 +14,9 @@ class server {
     name => "TeamCity-8.0.5",
   } ->
   class { "server::foresee":
-  } 
+  } ->
+  class { "thsea::php": }  ->
+  class { "thsea::mysqldb": } 
 
 } 
 
@@ -170,4 +172,71 @@ class server::user_data {
     group   => 'sudo', 
     mode    => '644',
   }
+}
+
+class thsea::php {
+  
+  package { 'php5-cli':
+    ensure => present
+  } ->
+  package { 'php5-mysql':
+    ensure => present
+  } ->
+  package { 'php5-pear':
+    ensure => present
+  } ->
+  exec { "pear auto-discover":
+    command => "/usr/bin/pear config-set auto_discover 1",
+    require => Package["php-pear"],
+  } ->
+  exec { "pear channel-discover":
+    command => "/usr/bin/pear channel-discover pear.phpunit.de",
+    require => Package["php-pear"],
+    returns => [0,1]
+  } ->
+  exec { "pear install phpunit":
+    command => "/usr/bin/pear install phpunit/PHPUnit-3.7.1",
+    require => Package["php-pear"],
+    returns => [0,1]
+  } ->
+
+}
+
+class thsea::mysqldb {
+  
+  package { 'mysql-server':
+    ensure => present
+  } ->
+  package { 'mysql-client':
+    ensure => present
+  }
+
+  service { "mysql":
+    enable => true,
+    ensure => running,
+    require => Package["mysql-service"],
+  }
+
+  exec { "set-mysql-password":
+    unless => "/usr/bin/mysqladmin -uroot -ppassword status",
+    path => ["/bin", "/usr/bin"],
+    command => "/usr/bin/mysqladmin -uroot password password",
+    require => Service["mysql"],
+  } ->
+  exec { "create database thsea_dev":
+    command => "/usr/bin/mysqladmin -uroot -ppassword -e \"create database thsea_dev;\"",
+    require => Service["mysql"],
+    returns => [0,1]
+  } ->
+  exec { "create thsea_dev account":
+    command => "/usr/bin/mysqladmin -uroot -ppassword -e \"create user 'thsea_dev'@'localhost'identified by 'password';\"",
+    require => Service["mysql"],
+    returns => [0,1]
+  } ->
+  exec { "grant privileges on thsea_dev":
+    command => "/usr/bin/mysqladmin -uroot -ppassword -e \"grant ALL PRIVILEGES on thsea_dev.* to 'thsea_dev'@'localhost'; FLUSH PRIVILEGES;\"",
+    require => Service["mysql"],
+    returns => [0,1]
+  } ->
+
 }
